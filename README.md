@@ -18,7 +18,7 @@ Both tools accept an optional `timezone` parameter:
 
 Add to your MCP configuration (e.g. Cursor, Claude Desktop):
 
-**Option 1: npm (recommended — faster startup)**
+### Option 1: npm (recommended — faster startup)
 
 ```json
 {
@@ -31,7 +31,7 @@ Add to your MCP configuration (e.g. Cursor, Claude Desktop):
 }
 ```
 
-**Option 2: GitHub**
+### Option 2: GitHub
 
 ```json
 {
