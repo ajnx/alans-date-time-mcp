@@ -1,7 +1,7 @@
 {
   "name": "alans-date-time-mcp",
   "version": "1.0.0",
-  "description": "MCP server providing get_time and get_datetime tools with timezone support",
+  "description": "MCP server providing get_date, get_time and get_datetime tools with timezone support",
   "type": "module",
   "main": "dist/index.js",
   "files": ["dist", "README.md"],
@@ -16,6 +16,9 @@
   },
   "keywords": ["mcp", "date", "time", "timezone"],
   "license": "MIT",
+  "author": "Alan Nightingale",
+  "bugs": "https://github.com/ajnx/alans-date-time-mcp/issues",
+  "homepage": "https://github.com/ajnx/alans-date-time-mcp#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/ajnx/alans-date-time-mcp"

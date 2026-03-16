@@ -32,6 +32,14 @@ function getParts(date: Date, timeZone: string) {
 }
 
 /**
+ * Format a date as date only (YYYY-MM-DD).
+ */
+export function formatDate(date: Date, timeZone: string): string {
+  const { year, month, day } = getParts(date, timeZone);
+  return `${year}-${month}-${day}`;
+}
+
+/**
  * Format a date as time only (HH:mm:ss).
  */
 export function formatTime(date: Date, timeZone: string): string {

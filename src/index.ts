@@ -8,11 +8,26 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import {
   resolveTimezone,
+  formatDate,
   formatTime,
   formatDateTime,
 } from "./timezone.js";
 
 const tools = [
+  {
+    name: "get_date",
+    description: "Get the current date only (e.g. 2025-03-15)",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        timezone: {
+          type: "string",
+          description:
+            'Timezone: "local" | "utc" | IANA string (default: "local")',
+        },
+      },
+    },
+  },
   {
     name: "get_time",
     description: "Get the current time only (e.g. 14:30:00)",
@@ -66,6 +81,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     const timezone = resolveTimezone(rawTimezone);
     const date = new Date();
+
+    if (name === "get_date") {
+      const dateStr = formatDate(date, timezone);
+      return {
+        content: [{ type: "text", text: dateStr }],
+      };
+    }
 
     if (name === "get_time") {
       const time = formatTime(date, timezone);
