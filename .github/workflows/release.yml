@@ -1,22 +1,56 @@
-# Runs when someone manually pushes a tag
-# This will manually trigger npm-publish.yml
+# Runs when the version in package.json is changed
+# Creates a tag, pushes it, creates a GitHub Release, and publishes to npm
 
-name: Create Release
+name: Release
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [main]
+    paths:
+      - 'package.json'
 
 jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
     steps:
       - uses: actions/checkout@v6
-      - uses: softprops/action-gh-release@v2
         with:
+          fetch-depth: 0
+      - run: git fetch --tags
+      - name: Create tag if version changed
+        id: create_tag
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="v$VERSION"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists, skipping"
+            echo "pushed=false" >> $GITHUB_OUTPUT
+          else
+            git tag "$TAG"
+            git push origin "$TAG"
+            echo "pushed=true" >> $GITHUB_OUTPUT
+            echo "tag=$TAG" >> $GITHUB_OUTPUT
+          fi
+      - name: Create GitHub Release
+        if: steps.create_tag.outputs.pushed == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.create_tag.outputs.tag }}
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node
+        if: steps.create_tag.outputs.pushed == 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+      - run: npm ci
+        if: steps.create_tag.outputs.pushed == 'true'
+      - run: npm publish --provenance --access public
+        if: steps.create_tag.outputs.pushed == 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
