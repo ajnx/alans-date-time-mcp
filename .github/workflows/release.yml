@@ -1,3 +1,6 @@
+# Runs when someone manually pushes a tag
+# This will manually trigger npm-publish.yml
+
 name: Create Release
 
 on:
