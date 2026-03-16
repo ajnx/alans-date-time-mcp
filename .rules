@@ -1,0 +1,9 @@
+# Releasing
+
+Bump the version in `package.json` before releasing. Use [semantic versioning](https://semver.org/):
+
+- **Patch** (1.0.1) — Bug fixes
+- **Minor** (1.1.0) — New features, backwards compatible
+- **Major** (2.0.0) — Breaking changes
+
+Use `npm version patch` (or `minor`/`major`) to bump and create a git tag. Then: `git push && git push --tags`, create a GitHub Release with the new tag (e.g. `v1.0.1`), and the workflow will publish to npm.
