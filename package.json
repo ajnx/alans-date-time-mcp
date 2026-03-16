@@ -1,6 +1,6 @@
 {
   "name": "alans-date-time-mcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "MCP server providing get_date, get_time and get_datetime tools with timezone support",
   "type": "module",
   "main": "dist/index.js",
